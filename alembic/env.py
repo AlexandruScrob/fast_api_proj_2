@@ -17,6 +17,7 @@ fileConfig(config.config_file_name)
 
 from ecomerce import config as config_env
 from ecomerce.db import Base
+from ecomerce.user.models import User
 
 # add your model's MetaData object here
 # for 'autogenerate' support
