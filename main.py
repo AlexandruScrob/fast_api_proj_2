@@ -1,9 +1,14 @@
+from imp import reload
 from fastapi import FastAPI
+import uvicorn
+
+from ecomerce.user import router as user_router
+
+app = FastAPI(title="EcomerceApp", version="0.0.1")
 
 
-app = FastAPI(title="Sample Docs", description="Private Docs.", version=1.0)
+app.include_router(user_router.router)
 
 
-@app.get("/")
-async def root():
-    return {"message": "Application is running."}
+if __name__ == "__main__":
+    uvicorn.run("main:app", host="127.0.0.1", port=5000, reload=True)
