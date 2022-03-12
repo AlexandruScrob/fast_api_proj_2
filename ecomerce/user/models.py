@@ -1,4 +1,6 @@
 from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import relationship
+
 from ecomerce.db import Base
 
 from . import hashing
@@ -11,6 +13,7 @@ class User(Base):
     name = Column(String(50))
     email = Column(String(255), unique=True)
     password = Column(String(255))
+    cart = relationship("Cart", back_populates="user_cart")
 
     def __init__(self, name, email, password, *args, **kwargs) -> None:
         self.name = name

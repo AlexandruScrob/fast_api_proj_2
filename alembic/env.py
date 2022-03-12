@@ -19,6 +19,7 @@ from ecomerce import config as config_env
 from ecomerce.db import Base
 from ecomerce.user.models import User
 from ecomerce.products.models import Product, Category
+from ecomerce.cart.models import Cart, CartItems
 
 # add your model's MetaData object here
 # for 'autogenerate' support
