@@ -2,3 +2,7 @@
 - migrations:
     alembic revision --autogenerate
     alembic upgrade head
+
+- celery:
+    # A = application, l = log level, pool = execution pool
+    celery -A main.celery worker -l info --pool=prefork
