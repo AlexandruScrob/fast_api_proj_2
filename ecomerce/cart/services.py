@@ -17,7 +17,9 @@ async def add_items(
     database.refresh(cart_items)
 
 
-async def add_to_cart(product_id: int, database: Session = Depends(db.get_db)):
+async def add_to_cart(
+    product_id: int, current_user, database: Session = Depends(db.get_db)
+):
     product_info = database.query(Product).get(product_id)
     if not product_info:
         raise HTTPException(
@@ -29,8 +31,7 @@ async def add_to_cart(product_id: int, database: Session = Depends(db.get_db)):
             status_code=status.HTTP_404_NOT_FOUND, detail="Item Out of Stock!"
         )
 
-    # TODO change this workaround
-    user_info = database.query(User).filter(User.email == "test@email.com").first()
+    user_info = database.query(User).filter(User.email == current_user.email).first()
 
     cart_info = database.query(Cart).filter(Cart.user_id == user_info.id).first()
     if not cart_info:
@@ -46,15 +47,13 @@ async def add_to_cart(product_id: int, database: Session = Depends(db.get_db)):
     return {"status": "Item Added to Cart"}
 
 
-async def get_all_items(database) -> schema.ShowCart:
-    # TODO change this workaround
-    user_info = database.query(User).filter(User.email == "test@email.com").first()
+async def get_all_items(database, current_user) -> schema.ShowCart:
+    user_info = database.query(User).filter(User.email == current_user.email).first()
     return database.query(Cart).filter(Cart.user_id == user_info.id).first()
 
 
-async def remove_cart_item(cart_item_id: int, database) -> None:
-    # TODO change this workaround
-    user_info = database.query(User).filter(User.email == "test@email.com").first()
+async def remove_cart_item(cart_item_id: int, current_user, database) -> None:
+    user_info = database.query(User).filter(User.email == current_user.email).first()
     cart_id = database.query(Cart).filter(User.id == user_info.id).first()
     database.query(CartItems).filter(
         CartItems.id == cart_item_id, CartItems.cart_id == cart_id.id

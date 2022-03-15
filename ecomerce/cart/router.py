@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, status, Response
 from sqlalchemy.orm import Session
 
 from ecomerce import db
-from ecomerce.user.schema import User
+from ecomerce.auth.jwt import get_current_user
 from . import services, schema
 
 
@@ -10,14 +10,21 @@ router = APIRouter(tags=["Cart"], prefix="/cart")
 
 
 @router.get("/add", status_code=status.HTTP_201_CREATED)
-async def add_product_to_cart(product_id: int, database: Session = Depends(db.get_db)):
-    result = await services.add_to_cart(product_id, database)
+async def add_product_to_cart(
+    product_id: int,
+    database: Session = Depends(db.get_db),
+    current_user: schema.User = Depends(get_current_user),
+):
+    result = await services.add_to_cart(product_id, current_user, database)
     return result
 
 
 @router.get("/", response_model=schema.ShowCart)
-async def get_all_cart_items(database: Session = Depends(db.get_db)):
-    result = await services.get_all_items(database)
+async def get_all_cart_items(
+    database: Session = Depends(db.get_db),
+    current_user: schema.User = Depends(get_current_user),
+):
+    result = await services.get_all_items(database, current_user)
     return result
 
 
@@ -25,6 +32,8 @@ async def get_all_cart_items(database: Session = Depends(db.get_db)):
     "/{cart_item_id}", status_code=status.HTTP_204_NO_CONTENT, response_class=Response
 )
 async def remove_cart_item_by_id(
-    cart_item_id: int, database: Session = Depends(db.get_db)
+    cart_item_id: int,
+    database: Session = Depends(db.get_db),
+    current_user: schema.User = Depends(get_current_user),
 ) -> None:
-    await services.remove_cart_item(cart_item_id, database)
+    await services.remove_cart_item(cart_item_id, current_user, database)

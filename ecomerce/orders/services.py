@@ -7,9 +7,8 @@ from ecomerce.user.models import User
 from . import tasks
 
 
-async def initiate_order(database) -> Order:
-    # TODO change this workaround
-    user_info = database.query(User).filter(User.email == "test@email.com").first()
+async def initiate_order(current_user, database) -> Order:
+    user_info = database.query(User).filter(User.email == current_user).first()
     cart = database.query(Cart).filter(Cart.user_id == user_info.id).first()
 
     cart_items_objects = database.query(CartItems).filter(Cart.id == cart.id)
@@ -49,9 +48,8 @@ async def initiate_order(database) -> Order:
     return new_order
 
 
-async def get_order_listing(database) -> List[Order]:
-    # TODO change this workaround
-    user_info = database.query(User).filter(User.email == "test@email.com").first()
+async def get_order_listing(current_user, database) -> List[Order]:
+    user_info = database.query(User).filter(User.email == current_user).first()
     return (
         database.query(Order).filter(Order.customer_id == user_info.id).all()
     )  # orders

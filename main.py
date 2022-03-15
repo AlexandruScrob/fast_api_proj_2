@@ -7,6 +7,8 @@ from ecomerce.user import router as user_router
 from ecomerce.products import router as product_router
 from ecomerce.cart import router as cart_router
 from ecomerce.orders import router as order_router
+from ecomerce.auth import router as auth_router
+
 from ecomerce import config
 
 
@@ -17,6 +19,7 @@ app.include_router(user_router.router)
 app.include_router(product_router.router)
 app.include_router(cart_router.router)
 app.include_router(order_router.router)
+app.include_router(auth_router.router)
 
 
 celery = Celery(
