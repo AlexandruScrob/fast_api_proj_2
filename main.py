@@ -22,14 +22,14 @@ app.include_router(order_router.router)
 app.include_router(auth_router.router)
 
 
-celery = Celery(
-    __name__,
-    broker=f"redis://{config.REDIS_HOST}:{config.REDIS_PORT}/{config.REDIS_DB}",
-    backend=f"redis://{config.REDIS_HOST}:{config.REDIS_PORT}/{config.REDIS_DB}",
-)
+# celery = Celery(
+#     __name__,
+#     broker=f"redis://{config.REDIS_HOST}:{config.REDIS_PORT}/{config.REDIS_DB}",
+#     backend=f"redis://{config.REDIS_HOST}:{config.REDIS_PORT}/{config.REDIS_DB}",
+# )
 
 
-celery.conf.imports = ["ecomerce.orders.tasks"]
+# celery.conf.imports = ["ecomerce.orders.tasks"]
 
 
 if __name__ == "__main__":
