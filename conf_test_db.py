@@ -14,7 +14,7 @@ DATABASE_NAME = config.TEST_DATABASE_NAME
 SQLALCHEMY_DATABASE_URL = f"postgresql://{DATABASE_USERNAME}:{DATABASE_PASSWORD}@{DATABASE_HOST}/{DATABASE_NAME}"
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
-TestingSessionLocal = sessionmaker(autoflush=False, autocomit=False, bind=engine)
+TestingSessionLocal = sessionmaker(autoflush=False, autocommit=False, bind=engine)
 
 Base.metadata.drop_all(bind=engine)
 Base.metadata.create_all(bind=engine)

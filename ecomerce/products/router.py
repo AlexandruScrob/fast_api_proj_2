@@ -23,13 +23,13 @@ async def get_all_categories(database: Session = Depends(db.get_db)):
     return await services.get_all_categories(database)
 
 
-@router.get("/category/{categor_idy}", response_model=schema.ListCategory)
+@router.get("/category/{category_id}", response_model=schema.ListCategory)
 async def get_category_by_id(category_id: int, database: Session = Depends(db.get_db)):
     return await services.get_category_by_id(category_id, database)
 
 
 @router.delete(
-    "/category/{categor_idy}",
+    "/category/{category_id}",
     status_code=status.HTTP_204_NO_CONTENT,
     response_class=Response,
 )
